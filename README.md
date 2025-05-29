@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CHAKDEN 상점</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      margin: 0;
+      padding: 0 20px 40px;
+      color: #333;
+    }
+    h1 {
+      margin-top: 40px;
+      font-size: 2.8rem;
+      color: #222;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+    }
+    .item {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+      max-width: 320px;
+      margin: 30px auto;
+      padding: 25px;
+      transition: transform 0.3s ease;
+    }
+    .item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+    .item img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    .item strong {
+      font-size: 1.5rem;
+      color: #444;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .price {
+      font-size: 1.2rem;
+      color: #e85c41;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+    button {
+      background: #5a8dee;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(90,141,238,0.6);
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #4071f4;
+    }
+
+    /* 상세보기 창 */
+    #detailOverlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    #detailBox {
+      background: white;
+      border-radius: 15px;
+      max-width: 400px;
+      width: 90%;
+      padding: 30px 25px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      position: relative;
+      text-align: left;
+      animation: slideUp 0.4s ease forwards;
+    }
+    #detailBox img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    #detailBox h2 {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      color: #222;
+    }
+    #detailBox .price {
+      font-size: 1.6rem;
+      color: #e85c41;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+    #detailBox p {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: #555;
+      margin-bottom: 25px;
+    }
+    #closeBtn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #f25c5c;
+      border: none;
+      color: white;
+      font-weight: bold;
+      font-size: 1.3rem;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(242, 92, 92, 0.7);
+      transition: background 0.3s ease;
+    }
+    #closeBtn:hover {
+      background: #d84343;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    @keyframes slideUp {
+      from {transform: translateY(50px); opacity: 0;}
+      to {transform: translateY(0); opacity: 1;}
+    }
+  </style>
+</head>
+<body>
+  <h1>CHAKDEN 상점에 오신걸 환영합니다!</h1>
+  
+  <div class="item">
+    <img src="CubeX.png" alt="큐브 크리스탈" />
+    <strong>큐브 크리스탈</strong>
+    <div class="price">1,000원</div>
+    <button id="detailBtn">자세히 보기</button>
+  </div>
+
+  <!-- 상세보기 레이어 -->
+  <div id="detailOverlay">
+    <div id="detailBox">
+      <button id="closeBtn">&times;</button>
+      <img src="CubeX.png" alt="큐브 크리스탈 맛보기" />
+      <h2>큐브 크리스탈</h2>
+      <div class="price">1,000원</div>
+      <p>
+        이 상품은 빛나는 큐브 모양의 크리스탈입니다. 게임 속에서 아이템을 구매하는 것 같은 재미를 느낄 수 있으며,  
+        인테리어 소품이나 선물용으로도 좋아요! 다양한 색상과 크기로 만나볼 수 있습니다.
+      </p>
+      <button id="orderBtn">카카오톡 주문하러 가기</button>
+    </div>
+  </div>
+
+  <script>
+    const detailBtn = document.getElementById('detailBtn');
+    const detailOverlay = document.getElementById('detailOverlay');
+    const closeBtn = document.getElementById('closeBtn');
+    const orderBtn = document.getElementById('orderBtn');
+
+    detailBtn.addEventListener('click', () => {
+      detailOverlay.style.display = 'flex';
+    });
+
+    closeBtn.addEventListener('click', () => {
+      // 애니메이션 주고 사라지게
+      detailOverlay.style.animation = 'fadeOut 0.4s ease forwards';
+      document.getElementById('detailBox').style.animation = 'slideDown 0.4s ease forwards';
+      setTimeout(() => {
+        detailOverlay.style.display = 'none';
+        detailOverlay.style.animation = 'fadeIn 0.4s ease forwards';
+        document.getElementById('detailBox').style.animation = 'slideUp 0.4s ease forwards';
+      }, 400);
+    });
+
+    orderBtn.addEventListener('click', () => {
+      window.open('https://open.kakao.com/o/sWdk2Xyh', '_blank');
+    });
+
+    // 애니메이션 정의 (닫기)
+    const styleSheet = document.createElement('style');
+    styleSheet.innerHTML = `
+      @keyframes fadeOut {
+        from {opacity: 1;}
+        to {opacity: 0;}
+      }
+      @keyframes slideDown {
+        from {transform: translateY(0); opacity: 1;}
+        to {transform: translateY(50px); opacity: 0;}
+      }
+    `;
+    document.head.appendChild(styleSheet);
+  </script>
+</body>
+</html>
